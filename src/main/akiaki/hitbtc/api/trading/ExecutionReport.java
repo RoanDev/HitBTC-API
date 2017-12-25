@@ -15,8 +15,8 @@
 package main.akiaki.hitbtc.api.trading;
 
 public class ExecutionReport {
-    public String orderId, clientOrderId, execReportType, orderStatus, orderRejectReason, symbol, side, type, timeInForce;
-    public double price, lastPrice, averagePrice;
+    public String orderId, latestOrderId, clientOrderId, execReportType, orderStatus, orderRejectReason, symbol, side, type, timeInForce, userId;
+    public double price, averagePrice;
     public long timestamp, tradeId;
     public int cumQuantity, leavesQuantity, lastQuantity, quantity;
 }

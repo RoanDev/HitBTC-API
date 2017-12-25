@@ -14,6 +14,7 @@
 
 package main.akiaki.hitbtc.api;
 
+import main.akiaki.hitbtc.api.market.RecentTrade;
 import main.akiaki.hitbtc.api.trading.*;
 import main.akiaki.hitbtc.exceptions.HitBTCAccessDenied;
 
@@ -35,23 +36,23 @@ public class TradeAPI extends SignaturedAPIInstrumentary {
     }
 
     public ArrayList<TradeOrder> getActiveOrders() throws IOException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, HitBTCAccessDenied {
-        return this.loadGETURL("tradeOrders/active", ActiveOrders.class).tradeOrders;
+        return this.loadGETURL("orders/active", ActiveOrders.class).orders;
     }
 
     public ArrayList<TradeOrder> getActiveOrdersWithParams(Map<String, String> args) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
-        return this.loadGETURL("tradeOrders/active", args, ActiveOrders.class).tradeOrders;
+        return this.loadGETURL("orders/active", args, ActiveOrders.class).orders;
     }
 
-    public ArrayList<TradeOrder> getRecentOrders(int maxresults) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
+    /*public ArrayList<RecentTrade> getRecentOrders(String currencyUID, int maxresults) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
         HashMap<String, String> args = new HashMap<>();
         args.put("maxresults", maxresults + "");
-        return this.loadGETURL("tradeOrders/recent", args, RecentOrders.class).tradeOrders;
+        return this.loadGETURL(currencyUID+"/trades/recent", args, RecentOrders.class).tradeOrders;
     }
 
-    public ArrayList<TradeOrder> getRecentOrdersWithParams(int maxresults, Map<String, String> args) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
+    public ArrayList<RecentTrade> getRecentOrdersWithParams(String currencyUID, int maxresults, Map<String, String> args) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
         args.put("maxresults", maxresults + "");
-        return this.loadGETURL("tradeOrders/recent", args, RecentOrders.class).tradeOrders;
-    }
+        return this.loadGETURL(currencyUID+"/trades/recent", args, RecentOrders.class).tradeOrders;
+    }*/
 
     public ArrayList<TradeOrder> getOrders() throws IOException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, HitBTCAccessDenied {
         return this.loadGETURL("order", Orders.class).tradeOrders;
@@ -68,22 +69,28 @@ public class TradeAPI extends SignaturedAPIInstrumentary {
     }
 
     public ExecutionReport createNewOrder(Map<String, String> args) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
-        return this.loadPOSTURL("new_order", args, POSTAPIResult.class).ExecutionReport.get(0);
+        return this.loadPOSTURL("new_order", args, POSTAPIResult.class).ExecutionReport;
     }
 
     public ExecutionReport cancelOrder(String clientOrderId) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
         HashMap<String, String> args = new HashMap<>();
         args.put("clientOrderId", clientOrderId);
-        return this.loadPOSTURL("cancel_order", args, POSTAPIResult.class).ExecutionReport.get(0);
+        return this.loadPOSTURL("cancel_order", args, POSTAPIResult.class).ExecutionReport;
     }
 
     public ExecutionReport cancelOrderWithParams(String clientOrderId, Map<String, String> args) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
         args.put("clientOrderId", clientOrderId);
-        return this.loadPOSTURL("cancel_order", args, POSTAPIResult.class).ExecutionReport.get(0);
+        return this.loadPOSTURL("cancel_order", args, POSTAPIResult.class).ExecutionReport;
     }
 
     public ArrayList<ExecutionReport> cancelAllOrders(Map<String, String> args) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
-        return this.loadPOSTURL("cancel_orders", args, POSTAPIResult.class).ExecutionReport;
+        return this.loadPOSTURL("cancel_orders", args, POSTAPIResultMultiple.class).ExecutionReport;
+    }
+
+    public ArrayList<ExecutionReport> cancelAllOrders(String currencyUID) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
+        HashMap<String, String> args = new HashMap<>();
+        args.put("symbols", currencyUID);
+        return this.loadPOSTURL("cancel_orders", args, POSTAPIResultMultiple.class).ExecutionReport;
     }
 
     public ArrayList<Trade> getAllTradesByOrder(String clientOrderId) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {

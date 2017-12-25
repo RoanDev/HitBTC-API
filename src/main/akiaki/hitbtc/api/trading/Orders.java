@@ -17,5 +17,5 @@ package main.akiaki.hitbtc.api.trading;
 import java.util.ArrayList;
 
 public class Orders {
-    public ArrayList<TradeOrder> tradeOrders;
+    public ArrayList<TradeOrder> tradeOrders = new ArrayList<>();
 }

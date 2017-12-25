@@ -69,6 +69,7 @@ public class SignaturedAPIInstrumentary extends APIInstrumentary {
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(obj.toURI());
 
+        //System.out.println(obj.toURI());
         request.addHeader("X-Signature", hmacDigest(obj.toURI().toString().substring(this.httpEndPoint.length()), this.apiSecret));
         request.addHeader("User-Agent", "Mozilla/5.0");
         HttpResponse response = client.execute(request);
@@ -82,6 +83,7 @@ public class SignaturedAPIInstrumentary extends APIInstrumentary {
             result.append(line);
         }
 
+        //System.out.println(result.toString());
         if (responseCode == 403) {
             throw new HitBTCAccessDenied(result.toString());
         }
@@ -140,12 +142,13 @@ public class SignaturedAPIInstrumentary extends APIInstrumentary {
             result.append(line);
 
         }
+        //System.out.println(result.toString());
         int responseCode = response.getStatusLine().getStatusCode();
         if (responseCode == 403) {
             throw new HitBTCAccessDenied(result.toString());
         }
         if (responseCode == 500) {
-            throw new IOException("hitbtc internal error");
+            throw new IOException(result.toString());
         }
         return result.toString();
     }

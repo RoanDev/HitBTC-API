@@ -30,8 +30,8 @@ public class MarketAPI extends APIInstrumentary {
         super("/api/1/public/", httpEndPoint);
     }
 
-    public Timestamp getTimestamp() throws IOException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, HitBTCAccessDenied {
-        return this.loadGETURL("time", Timestamp.class);
+    public long getTimestamp() throws IOException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, HitBTCAccessDenied {
+        return this.loadGETURL("time", Timestamp.class).timestamp;
     }
 
     public ArrayList<Symbol> getAllSymbols() throws IOException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, HitBTCAccessDenied {
@@ -53,8 +53,12 @@ public class MarketAPI extends APIInstrumentary {
         }.getType());
     }
 
-    public ArrayList<RecentTrade> getRecentTradesWithParams(String symbol, HashMap<String, String> params) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
-        params.put("format_item", "object");
-        return this.loadGETURL(symbol + "/trading/recent", params, RecentTrades.class).trades;
+    public ArrayList<RecentTrade> getRecentOrders(String currencyUID, int maxresults) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
+        HashMap<String, String> args = new HashMap<>();
+        args.put("maxresults", maxresults + "");
+        args.put("format_item", "object");
+        args.put("side", "true");
+        return this.loadGETURL(currencyUID+"/trades/recent", args, RecentTrades.class).trades;
     }
+
 }

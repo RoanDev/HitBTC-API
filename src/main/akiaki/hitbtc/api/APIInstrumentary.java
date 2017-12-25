@@ -60,6 +60,7 @@ abstract class APIInstrumentary {
     }
 
     public <T> T loadGETURL(String url, Map<String, String> data, Type type) throws IOException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, HitBTCAccessDenied {
+
         URIBuilder b = new URIBuilder(this.httpEndPoint + this.apiEndpoint + url);
         for (Map.Entry<String, String> e : data.entrySet()) {
             b.addParameter(e.getKey(), e.getValue());

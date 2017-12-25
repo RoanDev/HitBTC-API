@@ -16,6 +16,7 @@ package main.akiaki.hitbtc.api.trading;
 
 import java.util.ArrayList;
 
-public class ActiveOrders {
-    public ArrayList<TradeOrder> orders = new ArrayList<>();
+public class POSTAPIResultMultiple {
+    public ArrayList<ExecutionReport> ExecutionReport = new ArrayList<>();
+
 }

@@ -14,9 +14,8 @@
 
 package main.akiaki.hitbtc.api.trading;
 
-import java.util.ArrayList;
 
 public class POSTAPIResult {
-    public ArrayList<ExecutionReport> ExecutionReport;
+    public ExecutionReport ExecutionReport;
 
 }
